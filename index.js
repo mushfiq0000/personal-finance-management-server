@@ -10,7 +10,7 @@ app.use(express.json())
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.qn8yxeg.mongodb.net/?appName=Cluster0`;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -21,13 +21,30 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
+    
+    const db = client.db('transaction-db')
+    const transactionCollection = db.collection('transaction')
+    const addTransactionCollection = db.collection('/add-transaction')
+
+
+    app.get('/transaction', async(req, res)=>{
+
+        const result =await transactionCollection.find().toArray()
+
+
+        res.send(result)
+    })
+
+
+
+
+
+
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
-    // Ensures that the client will close when you finish/error
+    
     // await client.close();
   }
 }
