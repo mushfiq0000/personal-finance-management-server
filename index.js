@@ -25,7 +25,8 @@ async function run() {
     
     const db = client.db('transaction-db')
     const transactionCollection = db.collection('transaction')
-    const addTransactionCollection = db.collection('/add-transaction')
+
+    
 
 
     app.get('/transaction', async(req, res)=>{
@@ -35,6 +36,22 @@ async function run() {
 
         res.send(result)
     })
+
+
+
+
+    app.post('/transaction', async(req, res)=>{
+        const data = req.body
+        
+        const result =await transactionCollection.insertOne(data)
+
+
+        res.send(result)
+    })
+
+
+
+    
 
 
 
