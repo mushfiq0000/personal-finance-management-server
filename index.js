@@ -49,12 +49,12 @@ const verifyToken = async (req, res, next) => {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     const db = client.db("transaction-db");
     const transactionCollection = db.collection("transaction");
 
 
-    app.get("/transaction", async (req, res) => {
+    app.get("/transaction", verifyToken, async (req, res) => {
       const result = await transactionCollection.find().toArray();
       res.send(result);
     });
@@ -142,7 +142,7 @@ async function run() {
 
 
    
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
     console.log("Connected to MongoDB successfully!");
   } finally {
     // await client.close();
@@ -156,5 +156,5 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 app.listen(port, () => {
-  console.log(`🚀 Server is listening on port ${port}`);
+  console.log(`Server is listening on port ${port}`);
 });
